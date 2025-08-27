@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "aula_stl_stf" "\0"
+            VALUE "FileDescription", "programacao_mobile_8A" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "aula_stl_stf" "\0"
+            VALUE "InternalName", "programacao_mobile_8A" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "aula_stl_stf.exe" "\0"
-            VALUE "ProductName", "aula_stl_stf" "\0"
+            VALUE "OriginalFilename", "programacao_mobile_8A.exe" "\0"
+            VALUE "ProductName", "programacao_mobile_8A" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

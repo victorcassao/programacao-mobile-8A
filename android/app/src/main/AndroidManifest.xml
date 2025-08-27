@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="aula_stl_stf"
+        android:label="programacao_mobile_8A"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
