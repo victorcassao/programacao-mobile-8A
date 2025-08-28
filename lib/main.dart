@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:programacao_mobile_8A/pages/lista_receitas/pagina_lista_receitas.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,10 +11,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      home: HomePage(),
-    );
+    return MaterialApp(title: 'Flutter Demo', home: HomePage());
   }
 }
 
@@ -22,62 +20,23 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        ItemListaReceita(
-          titulo: "Parmegiana de Beringela",
-          descricao: "Receita muito boa",
-          estaFavoritada: true,
-        ),
-        ItemListaReceita(
-          titulo: "Parmegiana de Frango",
-          descricao: "Receita muito boa mesmo",
-          estaFavoritada: false,
-        )
-      ],
-    );
-  }
-}
-
-class ItemListaReceita extends StatelessWidget {
-
-  final String titulo;
-  final String descricao;
-  final bool estaFavoritada;
-
-  const ItemListaReceita(
-    {
-      required this.titulo,
-      required this.descricao,
-      required this.estaFavoritada,
-      super.key
-    }
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(  
-      child: ListTile(
-        leading: IconButton(
-          icon: estaFavoritada ? Icon(Icons.star) : Icon(Icons.star_border), 
-          onPressed: () => {},
-        ),
-        title: Text(titulo),
-        subtitle: Text(descricao),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () => {},
-            ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => {},
-            ),
-          ],
-        ),
-      ),
-    );
+    List<Map<String, dynamic>> minhasReceitas = [
+      {
+        "titulo": "Parmegiana de Beringela",
+        "descricao": "Receita muito boa",
+        "estaFavoritada": true,
+      },
+      {
+        "titulo": "Parmegiana de Frango",
+        "descricao": "Receita muito boa mesmo",
+        "estaFavoritada": false,
+      },
+      {
+        "titulo": "Lasanha",
+        "descricao": "Hmmm, lasanha",
+        "estaFavoritada": false,
+      },
+    ];
+    return PaginaListaReceitas(dadosReceitas: minhasReceitas);
   }
 }
