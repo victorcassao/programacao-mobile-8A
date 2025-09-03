@@ -4,11 +4,13 @@ class ItemListaReceita extends StatelessWidget {
   final String titulo;
   final String descricao;
   final bool estaFavoritada;
+  final VoidCallback aoFavoritar;
 
   const ItemListaReceita({
     required this.titulo,
     required this.descricao,
     required this.estaFavoritada,
+    required this.aoFavoritar,
     super.key,
   });
 
@@ -18,9 +20,7 @@ class ItemListaReceita extends StatelessWidget {
       child: ListTile(
         leading: IconButton(
           icon: estaFavoritada ? Icon(Icons.star) : Icon(Icons.star_border),
-          onPressed: () {
-            print("Favoritando a receita $titulo");
-          },
+          onPressed: aoFavoritar,
         ),
         title: Text(titulo),
         subtitle: Text(descricao),
