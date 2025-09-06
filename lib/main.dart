@@ -11,16 +11,24 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Flutter Demo', home: HomePage());
+    return MaterialApp(
+      title: 'ReceitasApp', 
+      home: HomePage(),
+      debugShowCheckedModeBanner: false,
+    );
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    List<Map<String, dynamic>> minhasReceitas = [
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _indice = 0;
+  List<Map<String, dynamic>> minhasReceitas = [
       {
         "titulo": "Parmegiana de Beringela",
         "descricao": "Receita muito boa",
@@ -37,6 +45,43 @@ class HomePage extends StatelessWidget {
         "estaFavoritada": false,
       },
     ];
-    return PaginaListaReceitas(dadosReceitas: minhasReceitas);
+
+  @override
+  Widget build(BuildContext context) {
+    final todasReceitas = minhasReceitas;
+    final favoritas = minhasReceitas
+      .where((e) => e['estaFavoritada'] == true)
+      .toList();
+    
+    List<Widget> telas = [
+      PaginaListaReceitas(dadosReceitas: todasReceitas),
+      PaginaListaReceitas(dadosReceitas: favoritas),
+    ];
+    return Scaffold(
+      appBar: AppBar(title: Text("Minhas Receitas")),
+      body: IndexedStack(
+        index: _indice,
+        children: telas,
+        ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: null, 
+        label: Text("Nova Receita"),
+        icon: Icon(Icons.add, size: 50,),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (i) => setState(() => _indice = i),
+        currentIndex: _indice,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.restaurant_menu_outlined),
+            label: 'Todas'
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star_sharp),
+            label: 'Favoritas'
+          )
+        ]
+      ),
+    );
   }
 }

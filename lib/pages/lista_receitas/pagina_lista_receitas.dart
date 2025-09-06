@@ -12,7 +12,7 @@ class PaginaListaReceitas extends StatefulWidget {
 
 class _PaginaListaReceitasState extends State<PaginaListaReceitas> {
   late List<Map<String, dynamic>> _receitas;
-
+  
   @override
   void initState() {
     super.initState();
@@ -23,12 +23,21 @@ class _PaginaListaReceitasState extends State<PaginaListaReceitas> {
     setState(() {
       _receitas[index]["estaFavoritada"] = !_receitas[index]["estaFavoritada"];
     });
+
+    final msg = _receitas[index]["estaFavoritada"]
+      ? 'Adicionado aos favoritos'
+      : 'Removido dos favoritos';
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("${ _receitas[index]["titulo"]} - $msg")
+      )
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: EdgeInsets.all(50),
       itemCount: _receitas.length,
       itemBuilder: (context, index) {
         var item = _receitas[index];
