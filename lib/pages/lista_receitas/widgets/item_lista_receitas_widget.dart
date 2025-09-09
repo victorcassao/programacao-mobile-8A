@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:programacao_mobile_8A/data/receitas.dart';
+import 'package:programacao_mobile_8A/pages/detalhes_receita/pagina_detalhe_receita.dart';
 
 class ItemListaReceita extends StatelessWidget {
-  final String titulo;
-  final String descricao;
-  final bool estaFavoritada;
+  final Receita receita;
   final VoidCallback aoFavoritar;
 
   const ItemListaReceita({
-    required this.titulo,
-    required this.descricao,
-    required this.estaFavoritada,
+    required this.receita,
     required this.aoFavoritar,
     super.key,
   });
@@ -18,12 +16,21 @@ class ItemListaReceita extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => PaginaDetalhesReceita(
+                receita: receita,
+              )
+            )
+          );
+        },
         leading: IconButton(
-          icon: estaFavoritada ? Icon(Icons.star) : Icon(Icons.star_border),
+          icon: receita.estaFavoritada ? Icon(Icons.star) : Icon(Icons.star_border),
           onPressed: aoFavoritar,
         ),
-        title: Text(titulo),
-        subtitle: Text(descricao),
+        title: Text(receita.titulo),
+        subtitle: Text(receita.descricao),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

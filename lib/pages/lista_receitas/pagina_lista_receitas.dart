@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:programacao_mobile_8A/data/receitas.dart';
 import 'package:programacao_mobile_8A/pages/lista_receitas/widgets/item_lista_receitas_widget.dart';
 
 class PaginaListaReceitas extends StatelessWidget {
@@ -18,12 +19,11 @@ class PaginaListaReceitas extends StatelessWidget {
     return ListView.builder(
       itemCount: dadosReceitas.length,
       itemBuilder: (context, index) {
-        var item = dadosReceitas[index];
+        var dadosItem = dadosReceitas[index];
+        Receita item = Receita.fromJson(dadosItem);
         return ItemListaReceita(
-          titulo: item['titulo'],
-          descricao: item['descricao'],
-          estaFavoritada: item['estaFavoritada'],
-          aoFavoritar: () => aoAlternarFavorito(item['titulo']),
+          receita: item,
+          aoFavoritar: () => aoAlternarFavorito(item.titulo),
         );
       },
     );
