@@ -11,7 +11,7 @@ class ItemListaReceita extends StatelessWidget {
     required this.aoFavoritar,
     super.key,
   });
-
+  
   @override
   Widget build(BuildContext context) {
     return Card(

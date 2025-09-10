@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:programacao_mobile_8A/pages/lista_receitas/pagina_lista_receitas.dart';
-import './receitas.dart';
+import 'dados_receitas.dart';
 
 void main() {
   runApp(const MyApp());

@@ -8,24 +8,61 @@ class PaginaDetalhesReceita extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var ingredientesWidget = receita.ingredientes.map((i) => Text(i)).toList();
+    
     return Scaffold(
       appBar: AppBar(title: Text(receita.titulo)),
-      body: Padding(
-        padding: EdgeInsetsGeometry.all(50),
-        child: Column(
-          children:
-              [
-                Text(receita.descricao),
-                Center(
-                  child: Text("Ingredientes", style: TextStyle(fontSize: 50)),
+      body: Column(
+        // Cabeçalho
+        children: [
+          WidgetCabecalhoDetalheReceita(receita: receita),
+        ],
+        // Corpo
+      ),
+    );
+  }
+}
+
+class WidgetCabecalhoDetalheReceita extends StatelessWidget {
+  const WidgetCabecalhoDetalheReceita({
+    super.key,
+    required this.receita,
+  });
+
+  final Receita receita;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsetsGeometry.all(20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  receita.titulo,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                ...ingredientesWidget,
-                Center(
-                  child: Text("Modo de preparo", style: TextStyle(fontSize: 50)),
-                ),
+                SizedBox(height: 4,),
+                Text(
+                  receita.descricao,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                )
               ],
-        ),
+            ),
+          ),
+          SizedBox(width: 50,),
+          Icon(
+            receita.estaFavoritada ? Icons.star : Icons.star_border,
+            size: 30,
+          )
+        ],
       ),
     );
   }
