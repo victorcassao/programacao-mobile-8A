@@ -1,51 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:programacao_mobile_8A/pages/lista_receitas/widgets/item_lista_receitas_widget.dart';
 
-class PaginaListaReceitas extends StatefulWidget {
+class PaginaListaReceitas extends StatelessWidget {
   final List<Map<String, dynamic>> dadosReceitas;
+  final Function(String titulo) aoAlternarFavorito;
 
-  const PaginaListaReceitas({required this.dadosReceitas, super.key});
-
-  @override
-  State<PaginaListaReceitas> createState() => _PaginaListaReceitasState();
-}
-
-class _PaginaListaReceitasState extends State<PaginaListaReceitas> {
-  late List<Map<String, dynamic>> _receitas;
-  
-  @override
-  void initState() {
-    super.initState();
-    _receitas = widget.dadosReceitas;
-  }
-
-  void alternarFavorito(int index){
-    setState(() {
-      _receitas[index]["estaFavoritada"] = !_receitas[index]["estaFavoritada"];
-    });
-
-    final msg = _receitas[index]["estaFavoritada"]
-      ? 'Adicionado aos favoritos'
-      : 'Removido dos favoritos';
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("${ _receitas[index]["titulo"]} - $msg")
-      )
-    );
-  }
-
+  const PaginaListaReceitas(
+    {
+      required this.dadosReceitas, 
+      required this.aoAlternarFavorito,
+      super.key
+    }
+  );
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: _receitas.length,
+      itemCount: dadosReceitas.length,
       itemBuilder: (context, index) {
-        var item = _receitas[index];
+        var item = dadosReceitas[index];
         return ItemListaReceita(
           titulo: item['titulo'],
           descricao: item['descricao'],
           estaFavoritada: item['estaFavoritada'],
-          aoFavoritar: () => alternarFavorito(index),
+          aoFavoritar: () => aoAlternarFavorito(item['titulo']),
         );
       },
     );

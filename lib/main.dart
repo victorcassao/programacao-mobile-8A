@@ -46,6 +46,24 @@ class _HomePageState extends State<HomePage> {
       },
     ];
 
+  void alternarFavoritoPorTitulo(String titulo){
+
+    final idx = minhasReceitas.indexWhere((e) => e['titulo'] == titulo);
+    setState(() {
+      minhasReceitas[idx]["estaFavoritada"] = !minhasReceitas[idx]["estaFavoritada"];
+    });
+
+    final msg = minhasReceitas[idx]["estaFavoritada"]
+      ? 'Adicionado aos favoritos'
+      : 'Removido dos favoritos';
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text("${ minhasReceitas[idx]["titulo"]} - $msg")
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final todasReceitas = minhasReceitas;
@@ -54,8 +72,8 @@ class _HomePageState extends State<HomePage> {
       .toList();
     
     List<Widget> telas = [
-      PaginaListaReceitas(dadosReceitas: todasReceitas),
-      PaginaListaReceitas(dadosReceitas: favoritas),
+      PaginaListaReceitas(dadosReceitas: todasReceitas, aoAlternarFavorito: alternarFavoritoPorTitulo),
+      PaginaListaReceitas(dadosReceitas: favoritas, aoAlternarFavorito: alternarFavoritoPorTitulo),
     ];
     return Scaffold(
       appBar: AppBar(title: Text("Minhas Receitas")),

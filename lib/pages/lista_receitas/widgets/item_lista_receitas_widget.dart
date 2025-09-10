@@ -18,6 +18,7 @@ class ItemListaReceita extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        onTap: () => print(titulo),
         leading: IconButton(
           icon: estaFavoritada ? Icon(Icons.star) : Icon(Icons.star_border),
           onPressed: aoFavoritar,
