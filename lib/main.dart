@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:programacao_mobile_8A/pages/lista_receitas/pagina_lista_receitas.dart';
+import 'dados_receitas.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,23 +29,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _indice = 0;
-  List<Map<String, dynamic>> minhasReceitas = [
-      {
-        "titulo": "Parmegiana de Beringela",
-        "descricao": "Receita muito boa",
-        "estaFavoritada": true,
-      },
-      {
-        "titulo": "Parmegiana de Frango",
-        "descricao": "Receita muito boa mesmo",
-        "estaFavoritada": false,
-      },
-      {
-        "titulo": "Lasanha",
-        "descricao": "Hmmm, lasanha",
-        "estaFavoritada": false,
-      },
-    ];
 
   void alternarFavoritoPorTitulo(String titulo){
 
