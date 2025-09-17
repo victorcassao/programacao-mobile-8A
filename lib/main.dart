@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:programacao_mobile_8A/data/receitas.dart';
+import 'package:programacao_mobile_8A/pages/criar_receita/pagina_cadastro_receita.dart';
 import 'package:programacao_mobile_8A/pages/lista_receitas/pagina_lista_receitas.dart';
 import 'dados_receitas.dart';
 
@@ -48,6 +50,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void salvarNovaReceita(Receita receita){
+    setState(() {
+      minhasReceitas.add(receita.toJson());
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final todasReceitas = minhasReceitas;
@@ -66,7 +74,15 @@ class _HomePageState extends State<HomePage> {
         children: telas,
         ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: null, 
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (_){
+              return PaginaCadastroReceita(
+                onSalvar: salvarNovaReceita,
+              );
+            })
+          );
+        }, 
         label: Text("Nova Receita"),
         icon: Icon(Icons.add, size: 50,),
       ),
