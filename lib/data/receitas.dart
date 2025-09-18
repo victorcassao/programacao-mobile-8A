@@ -32,4 +32,18 @@ class Receita {
       modoPreparo: r["modoPreparo"]
     );
   }
+
+  Map<String, dynamic> toJson(){
+    return {
+      "titulo": titulo,
+      "descricao": descricao,
+      "estaFavoritada": estaFavoritada,
+      "porcoes": porcoes,
+      "tempoPreparo": tempoPreparo,
+      "categorias": categorias,
+      "ingredientes": ingredientes,
+      "modoPreparo": modoPreparo
+    };
+  }
+
 }
