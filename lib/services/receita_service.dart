@@ -15,33 +15,39 @@ class ReceitaService {
     }
   }
 
-  // READ - Obter todas as receitas em tempo real
-  Stream<List<Receita>> obterTodasReceitas() {
-    return _receitasCollection
-        .orderBy('titulo')
-        .snapshots()
-        .map((snapshot) {
+  // READ - Obter todas as receitas (UMA VEZ)
+  Future<List<Receita>> obterTodasReceitas() async {
+    try {
+      QuerySnapshot snapshot = await _receitasCollection
+          .orderBy('titulo')
+          .get();
+      
       return snapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         data['id'] = doc.id; // Adicionar o ID do documento
         return Receita.fromJson(data);
       }).toList();
-    });
+    } catch (e) {
+      throw Exception('Erro ao obter receitas: $e');
+    }
   }
 
-  // READ - Obter apenas receitas favoritas
-  Stream<List<Receita>> obterReceitasFavoritas() {
-    return _receitasCollection
-        .where('estaFavoritada', isEqualTo: true)
-        .orderBy('titulo')
-        .snapshots()
-        .map((snapshot) {
+  // READ - Obter apenas receitas favoritas (UMA VEZ)
+  Future<List<Receita>> obterReceitasFavoritas() async {
+    try {
+      QuerySnapshot snapshot = await _receitasCollection
+          .where('estaFavoritada', isEqualTo: true)
+          .orderBy('titulo')
+          .get();
+      
       return snapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         data['id'] = doc.id;
         return Receita.fromJson(data);
       }).toList();
-    });
+    } catch (e) {
+      throw Exception('Erro ao obter receitas favoritas: $e');
+    }
   }
 
   // READ - Obter uma receita específica
@@ -90,30 +96,36 @@ class ReceitaService {
   }
 
   // UTILITY - Buscar receitas por categoria
-  Stream<List<Receita>> buscarPorCategoria(String categoria) {
-    return _receitasCollection
-        .where('categorias', arrayContains: categoria)
-        .snapshots()
-        .map((snapshot) {
+  Future<List<Receita>> buscarPorCategoria(String categoria) async {
+    try {
+      QuerySnapshot snapshot = await _receitasCollection
+          .where('categorias', arrayContains: categoria)
+          .get();
+      
       return snapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         data['id'] = doc.id;
         return Receita.fromJson(data);
       }).toList();
-    });
+    } catch (e) {
+      throw Exception('Erro ao buscar por categoria: $e');
+    }
   }
 
   // UTILITY - Buscar receitas por tempo de preparo máximo
-  Stream<List<Receita>> buscarPorTempoPreparo(int tempoMaximo) {
-    return _receitasCollection
-        .where('tempoPreparo', isLessThanOrEqualTo: tempoMaximo)
-        .snapshots()
-        .map((snapshot) {
+  Future<List<Receita>> buscarPorTempoPreparo(int tempoMaximo) async {
+    try {
+      QuerySnapshot snapshot = await _receitasCollection
+          .where('tempoPreparo', isLessThanOrEqualTo: tempoMaximo)
+          .get();
+      
       return snapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
         data['id'] = doc.id;
         return Receita.fromJson(data);
       }).toList();
-    });
+    } catch (e) {
+      throw Exception('Erro ao buscar por tempo: $e');
+    }
   }
 }

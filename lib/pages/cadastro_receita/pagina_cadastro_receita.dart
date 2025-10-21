@@ -169,7 +169,7 @@ class _PaginaCadastroReceitaState extends State<PaginaCadastroReceita> {
         );
         return;
       }
-
+      
       if (_modoPreparoControllers.isEmpty || 
           _modoPreparoControllers.every((c) => c.text.trim().isEmpty)) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -520,7 +520,6 @@ class _PaginaCadastroReceitaState extends State<PaginaCadastroReceita> {
                     ),
                   ),
                   SizedBox(height: 24),
-                  
                   // Botões
                   Row(
                     children: [

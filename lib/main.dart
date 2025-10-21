@@ -41,6 +41,17 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _indice = 0;
   final ReceitaService _receitaService = ReceitaService();
+  
+  // Keys para controlar o refresh dos FutureBuilders
+  Key _todasReceitasKey = UniqueKey();
+  Key _receitasFavoritasKey = UniqueKey();
+
+  void _atualizarListas() {
+    setState(() {
+      _todasReceitasKey = UniqueKey();
+      _receitasFavoritasKey = UniqueKey();
+    });
+  }
 
   void alternarFavoritoPorId(String id, bool valorAtual) async {
     try {
@@ -54,6 +65,9 @@ class _HomePageState extends State<HomePage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(msg))
         );
+        
+        // Atualizar as listas após favoritar
+        _atualizarListas();
       }
     } catch (e) {
       if (mounted) {
@@ -72,6 +86,9 @@ class _HomePageState extends State<HomePage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Receita adicionada com sucesso!'))
         );
+        
+        // Atualizar as listas após adicionar
+        _atualizarListas();
       }
     } catch (e) {
       if (mounted) {
@@ -90,6 +107,9 @@ class _HomePageState extends State<HomePage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Receita excluída com sucesso!'))
         );
+        
+        // Atualizar as listas após excluir
+        _atualizarListas();
       }
     } catch (e) {
       if (mounted) {
@@ -103,29 +123,79 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Minhas Receitas")),
+      appBar: AppBar(
+        title: Text("Minhas Receitas"),
+        actions: [
+          // Botão de refresh manual
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: _atualizarListas,
+            tooltip: 'Atualizar',
+          ),
+        ],
+      ),
       body: IndexedStack(
         index: _indice,
         children: [
           // Todas as receitas
-          StreamBuilder<List<Receita>>(
-            stream: _receitaService.obterTodasReceitas(),
+          FutureBuilder<List<Receita>>(
+            key: _todasReceitasKey,
+            future: _receitaService.obterTodasReceitas(),
             builder: (context, snapshot) {
+              // Estado: Carregando
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
               
+              // Estado: Erro
               if (snapshot.hasError) {
-                return Center(child: Text('Erro: ${snapshot.error}'));
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.error_outline, size: 64, color: Colors.red),
+                      SizedBox(height: 16),
+                      Text(
+                        'Erro ao carregar receitas',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        '${snapshot.error}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      SizedBox(height: 16),
+                      ElevatedButton.icon(
+                        onPressed: _atualizarListas,
+                        icon: Icon(Icons.refresh),
+                        label: Text('Tentar Novamente'),
+                      ),
+                    ],
+                  ),
+                );
               }
               
+              // Estado: Sucesso
               final receitas = snapshot.data ?? [];
               
               if (receitas.isEmpty) {
                 return Center(
-                  child: Text(
-                    'Nenhuma receita cadastrada',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.restaurant_menu, size: 64, color: Colors.grey),
+                      SizedBox(height: 16),
+                      Text(
+                        'Nenhuma receita cadastrada',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Toque no botão + para adicionar',
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                    ],
                   ),
                 );
               }
@@ -139,24 +209,64 @@ class _HomePageState extends State<HomePage> {
           ),
           
           // Receitas favoritas
-          StreamBuilder<List<Receita>>(
-            stream: _receitaService.obterReceitasFavoritas(),
+          FutureBuilder<List<Receita>>(
+            key: _receitasFavoritasKey,
+            future: _receitaService.obterReceitasFavoritas(),
             builder: (context, snapshot) {
+              // Estado: Carregando
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
               }
               
+              // Estado: Erro
               if (snapshot.hasError) {
-                return Center(child: Text('Erro: ${snapshot.error}'));
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.error_outline, size: 64, color: Colors.red),
+                      SizedBox(height: 16),
+                      Text(
+                        'Erro ao carregar favoritas',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        '${snapshot.error}',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      SizedBox(height: 16),
+                      ElevatedButton.icon(
+                        onPressed: _atualizarListas,
+                        icon: Icon(Icons.refresh),
+                        label: Text('Tentar Novamente'),
+                      ),
+                    ],
+                  ),
+                );
               }
               
+              // Estado: Sucesso
               final receitas = snapshot.data ?? [];
               
               if (receitas.isEmpty) {
                 return Center(
-                  child: Text(
-                    'Nenhuma receita favoritada',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.star_border, size: 64, color: Colors.grey),
+                      SizedBox(height: 16),
+                      Text(
+                        'Nenhuma receita favoritada',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Toque na estrela para favoritar receitas',
+                        style: TextStyle(color: Colors.grey[600]),
+                      ),
+                    ],
                   ),
                 );
               }
@@ -171,14 +281,16 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.of(context).push(
+        onPressed: () async {
+          // Navega e espera retorno
+          await Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (_) {
-                return PaginaCadastroReceita();
-              }
+              builder: (_) => PaginaCadastroReceita(),
             )
           );
+          
+          // Quando voltar, atualiza as listas
+          _atualizarListas();
         }, 
         label: Text("Nova Receita"),
         icon: Icon(Icons.add, size: 50),
