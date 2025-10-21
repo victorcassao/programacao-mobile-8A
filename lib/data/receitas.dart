@@ -1,5 +1,5 @@
 class Receita {
-
+  String? id; // ID do documento no Firestore
   String titulo;
   String descricao;
   bool estaFavoritada;
@@ -10,6 +10,7 @@ class Receita {
   List<String> modoPreparo;
 
   Receita({
+    this.id,
     required this.titulo,
     required this.descricao,
     required this.estaFavoritada,
@@ -20,21 +21,23 @@ class Receita {
     required this.modoPreparo,
   });
 
-  factory Receita.fromJson(Map<String, dynamic> r){
+  factory Receita.fromJson(Map<String, dynamic> r) {
     return Receita(
+      id: r['id'],
       titulo: r["titulo"], 
       descricao: r["descricao"], 
       estaFavoritada: r["estaFavoritada"], 
       porcoes: r["porcoes"], 
       tempoPreparo: r["tempoPreparo"], 
-      categorias: r["categorias"], 
-      ingredientes: r["ingredientes"], 
-      modoPreparo: r["modoPreparo"]
+      categorias: List<String>.from(r["categorias"] ?? []), 
+      ingredientes: List<String>.from(r["ingredientes"] ?? []), 
+      modoPreparo: List<String>.from(r["modoPreparo"] ?? [])
     );
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
+      // Não incluímos o 'id' no toJson pois ele é gerado pelo Firestore
       "titulo": titulo,
       "descricao": descricao,
       "estaFavoritada": estaFavoritada,
@@ -45,5 +48,4 @@ class Receita {
       "modoPreparo": modoPreparo
     };
   }
-
 }

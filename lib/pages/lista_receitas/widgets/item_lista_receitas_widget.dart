@@ -5,10 +5,12 @@ import 'package:programacao_mobile_8A/pages/detalhes_receita/pagina_detalhe_rece
 class ItemListaReceita extends StatelessWidget {
   final Receita receita;
   final VoidCallback aoFavoritar;
+  final VoidCallback aoExcluir;
 
   const ItemListaReceita({
     required this.receita,
     required this.aoFavoritar,
+    required this.aoExcluir,
     super.key,
   });
 
@@ -26,16 +28,24 @@ class ItemListaReceita extends StatelessWidget {
           );
         },
         leading: IconButton(
-          icon: receita.estaFavoritada ? Icon(Icons.star) : Icon(Icons.star_border),
+          icon: receita.estaFavoritada 
+            ? Icon(Icons.star, color: Colors.amber) 
+            : Icon(Icons.star_border),
           onPressed: aoFavoritar,
         ),
         title: Text(receita.titulo),
-        subtitle: Text(receita.descricao),
+        subtitle: Text(
+          receita.descricao,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            IconButton(icon: Icon(Icons.edit), onPressed: () => {}),
-            IconButton(icon: Icon(Icons.delete), onPressed: () => {}),
+            IconButton(
+              icon: Icon(Icons.delete, color: Colors.red),
+              onPressed: aoExcluir,
+            ),
           ],
         ),
       ),
